@@ -1,0 +1,34 @@
+# docker-compose.yml
+version: '3.8'
+
+services:
+  femur-segmentation:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    container_name: femur_segmentation_service
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/app/data
+      - ./models:/app/models
+    environment:
+      - PYTHONUNBUFFERED=1
+      - CUDA_VISIBLE_DEVICES=0  # Если есть GPU
+      - MODEL_TYPE=totalsegmentator  # или monai
+    networks:
+      - femur_network
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 8G  # Ограничение памяти
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]  # Для GPU (опционально)
+
+networks:
+  femur_network:
+    driver: bridge
