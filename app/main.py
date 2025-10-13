@@ -317,6 +317,7 @@ async def export(
             )
     
     except Exception as e:
+        raise e
         raise HTTPException(status_code=500, detail=f"Ошибка экспорта: {str(e)}")
 
 

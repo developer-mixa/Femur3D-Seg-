@@ -85,7 +85,7 @@ class FemurSegmentationModel:
         self.model = UNet(
             spatial_dims=3,
             in_channels=1,
-            out_channels=2,  # фон + бедренная кость
+            out_channels=5,  # фон + бедренная кость
             channels=(16, 32, 64, 128, 256),
             strides=(2, 2, 2, 2),
             num_res_units=2,
@@ -110,11 +110,8 @@ class FemurSegmentationModel:
             LoadImaged(keys=["image"]),
             EnsureChannelFirstd(keys=["image"]),
             Orientationd(keys=["image"], axcodes="RAS"),
-            Spacingd(
-                keys=["image"],
-                pixdim=(1.5, 1.5, 2.0),
-                mode="bilinear"
-            ),
+            # Spacingd(keys=["image"], pixdim=(1.5, 1.5, 2.0), mode="bilinear"),
+            # CropForegroundd(keys=["image"], source_key="image"),
             ScaleIntensityRanged(
                 keys=["image"],
                 a_min=-200,
@@ -123,7 +120,6 @@ class FemurSegmentationModel:
                 b_max=1.0,
                 clip=True
             ),
-            CropForegroundd(keys=["image"], source_key="image"),
             EnsureTyped(keys=["image"])
         ])
         
