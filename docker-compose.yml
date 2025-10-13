@@ -12,6 +12,7 @@ services:
     volumes:
       - ./data:/app/data
       - ./models:/app/models
+      - ./app:/app/app
     environment:
       - PYTHONUNBUFFERED=1
       - CUDA_VISIBLE_DEVICES=0  # Если есть GPU

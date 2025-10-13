@@ -17,15 +17,17 @@ COPY requirements.txt .
 
 RUN pip install --no-cache-dir -r requirements.txt
 
+RUN pip install blosc2 --upgrade
+
+RUN pip install dicom2nifti==2.5.1
+
 RUN pip install --no-cache-dir TotalSegmentator
 
 COPY app/ ./app/
 COPY data/ ./data/
 
-# Создание необходимых директорий
 RUN mkdir -p data/input data/output data/models data/temp
 
-# Установка переменных окружения
 ENV PYTHONPATH=/app
 ENV MODEL_TYPE=totalsegmentator
 

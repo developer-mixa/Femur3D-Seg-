@@ -48,7 +48,7 @@ async def startup_event():
     """Инициализация модели при запуске"""
     global MODEL
     print("Загрузка модели сегментации...")
-    MODEL = FemurSegmentationModel()
+    MODEL = FemurSegmentationModel('monai')
     await MODEL.load_model()
     print("Модель загружена успешно!")
 

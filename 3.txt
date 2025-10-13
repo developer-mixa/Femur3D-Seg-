@@ -1,0 +1,39 @@
+aasdasdaaasdasdaaasdasdaaasdasdaaasdasda\
+
+
+Инструкция по использованию:
+
+1. **Подготовка данных:**
+
+```bash
+python prepare_dataset.py
+```
+
+1. **Запуск обучения:**
+
+```bash
+# Базовое обучение
+python train_monai_model.py --data-dir data/training --epochs 100
+
+# С GPU и большим батчем
+python train_monai_model.py --data-dir data/training --epochs 200 --batch-size 4 --device cuda
+
+# Другая архитектура
+python train_monai_model.py --model-type segresnet --epochs 150
+```
+
+1. **После обучения веса будут сохранены в:**
+
+- `data/models/femur_unet.pth` - лучшая модель
+- `data/models/femur_unet_final.pth` - финальная модель
+- `data/models/training_history.png` - графики обучения
+
+Скрипт обучения включает:
+
+- Поддержку разных архитектур (UNet, SegResNet, AttentionUnet)
+- Аугментации данных
+- Sliding window inference для больших изображений
+- Метрики (Dice score)
+- Сохранение лучшей модели
+- Визуализацию процесса обучения
+- Создание синтетических данных для демонстрации

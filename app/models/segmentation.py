@@ -151,7 +151,12 @@ class FemurSegmentationModel:
         print("Выполнение сегментации с TotalSegmentator...")
         
         input_path = data["path"]
-        output_dir = Path("data/temp") / data["task_id"]
+
+        task_id = data.get("task_id", None)
+        if task_id is None:
+            raise ValueError("task_id отсутствует в данных для сегментации")
+
+        output_dir = Path("data/temp") / task_id
         output_dir.mkdir(parents=True, exist_ok=True)
         
         # Запуск TotalSegmentator
@@ -203,7 +208,10 @@ class FemurSegmentationModel:
             return combined_mask if combined_mask is not None else np.zeros_like(data["volume"])
             
         except Exception as e:
+            import traceback
+
             print(f"Ошибка TotalSegmentator: {e}")
+            traceback.print_exc() 
             print("Переключение на MONAI...")
             self.model_type = "monai"
             await self._load_monai_model()
